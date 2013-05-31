@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE struts PUBLIC
+      "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+      "http://struts.apache.org/dtds/struts-2.0.dtd">
+  <struts>
+  	<!--配置Spring-->
+  	<constant name="struts.objectFactory" value="spring" />
+  	<!--开发模式-->
+  	<constant name="struts.devMode" value="true" />
+  	
+      <package name="test" namespace="/test" extends="struts-default">
+          <action name="test" class="test.actions.TestAction">
+          	  <result name="fail">/test/fail.jsp</result>
+              <result name="success">/test/success.jsp</result>
+              <result name="error">/test/test.jsp</result>
+          </action>
+          
+          <action name="*Person" method="{1}" class="test.actions.PersonAction">
+          	<param name="action">{1}</param>
+          	<result>/post/list.jsp</result>
+          	<result name="list">/post/list.jsp</result>
+          </action>
+      </package>
+  </struts>

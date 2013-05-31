@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd
+	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	
+	<!-- 配置数据源 -->  
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">  
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />  
+		<property name="url" value="jdbc:mysql://localhost:3306/activiti" />  
+		<property name="username" value="root" />  
+		<property name="password" value="sunkai" />  
+	</bean>  
+	<!--配置事务管理器  -->  
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+		<property name="dataSource" ref="dataSource" />  
+	</bean>  
+	<!--流程引擎配置  -->  
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">  
+		<property name="dataSource" ref="dataSource" />  
+		<property name="transactionManager" ref="transactionManager" />  
+		<property name="databaseSchemaUpdate" value="true" />  
+		<property name="jobExecutorActivate" value="false" />  
+	</bean>  
+	<!--配置流程引擎  -->  
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">  
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />  
+	</bean>  
+	<!--配置流程相关的服务  -->  
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />  
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />  
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />  
+	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />  
+	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />  
+    
+	<!--配置流程中工具类-->  
+	<bean id="commonUtil" class="activiti.process.util.CommonUtil">  
+	</bean>  
+
+</beans>
